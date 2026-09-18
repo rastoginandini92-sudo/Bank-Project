@@ -8,6 +8,8 @@
   --badge-blue: #043874;
   --text-subtitle: #4c688b;
   --border-light: #e1edf9;
+  --inner-blue-box: #e7f2fd;
+  --input-placeholder: #9bb1c9;
   --shadow-soft: 0 12px 36px rgba(4, 40, 84, 0.1);
   --shadow-badge: 0 6px 14px rgba(4, 56, 116, 0.35);
   --font-family: 'Outfit', 'Inter', -apple-system, sans-serif;
@@ -76,7 +78,7 @@ body {
   font-size: 0.75rem;
 }
 
-/* Home Screen Center Card */
+/* Home & Details Center White Card */
 .home-screen-padding {
   padding: 1.5rem 1.2rem;
   flex: 1;
@@ -117,12 +119,6 @@ body {
   font-size: 1.75rem;
   box-shadow: var(--shadow-badge);
   flex-shrink: 0;
-}
-
-.brand-icon-box img {
-  width: 36px;
-  height: 36px;
-  object-fit: contain;
 }
 
 .brand-text-group {
@@ -225,6 +221,120 @@ body {
   font-size: 1.1rem;
 }
 
+/* Enter Details Screen Specific Header */
+.details-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 0.3rem;
+}
+
+.details-back-circle {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: #eaf2fc;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--badge-blue);
+  cursor: pointer;
+  transition: all 0.2s;
+  flex-shrink: 0;
+}
+
+.details-back-circle:hover {
+  background: #d8e6f8;
+}
+
+.details-header h2 {
+  font-size: 1.45rem;
+  font-weight: 800;
+  color: var(--navy-title);
+  letter-spacing: -0.3px;
+}
+
+/* Enter Details Light Blue Form Container Card */
+.details-form-container {
+  background: var(--inner-blue-box);
+  border-radius: 24px;
+  padding: 1.4rem 1.1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+  border: 1px solid #d5e5f7;
+}
+
+.details-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+
+.details-field label {
+  font-size: 0.72rem;
+  font-weight: 800;
+  color: var(--navy-title);
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+  padding-left: 0.25rem;
+}
+
+.details-pill-input {
+  width: 100%;
+  background: #ffffff;
+  border: 1.5px solid #d6e5f5;
+  border-radius: 24px;
+  padding: 0.85rem 1.25rem;
+  font-size: 0.95rem;
+  color: var(--navy-title);
+  outline: none;
+  font-family: inherit;
+  transition: all 0.2s;
+  box-shadow: 0 2px 6px rgba(4, 56, 116, 0.02);
+}
+
+.details-pill-input::placeholder {
+  color: var(--input-placeholder);
+  font-weight: 400;
+}
+
+.details-pill-input:focus {
+  border-color: var(--badge-blue);
+  box-shadow: 0 0 10px rgba(4, 56, 116, 0.15);
+}
+
+/* Next Button Pill */
+.btn-next-pill {
+  width: 100%;
+  background: var(--badge-blue);
+  color: #ffffff;
+  border: none;
+  border-radius: 30px;
+  padding: 1rem 1.2rem;
+  font-size: 1.05rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  box-shadow: var(--shadow-badge);
+  transition: all 0.2s cubic-bezier(0.2, 0.8, 0.2, 1);
+  margin-top: 0.4rem;
+}
+
+.btn-next-pill:hover {
+  background: #032b56;
+  transform: translateY(-1px);
+  box-shadow: 0 10px 24px rgba(4, 56, 116, 0.45);
+}
+
+.btn-next-pill:active {
+  transform: scale(0.98);
+}
+
 /* Footer Section inside Card */
 .home-card-footer {
   border-top: 1px solid var(--border-light);
@@ -239,101 +349,4 @@ body {
 .home-card-footer strong {
   color: var(--navy-title);
   font-weight: 700;
-}
-
-/* Inner Feature Screen Layout */
-.inner-screen-header {
-  background: var(--navy-dark);
-  color: white;
-  padding: 1rem 1.2rem;
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-}
-
-.back-btn {
-  background: rgba(255, 255, 255, 0.15);
-  border: none;
-  color: white;
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: background 0.2s;
-}
-
-.back-btn:hover {
-  background: rgba(255, 255, 255, 0.3);
-}
-
-.inner-screen-title {
-  font-size: 1.15rem;
-  font-weight: 700;
-}
-
-.inner-screen-body {
-  padding: 1.2rem;
-  flex: 1;
-}
-
-.glass-panel-inner {
-  background: #ffffff;
-  border-radius: 24px;
-  padding: 1.5rem;
-  box-shadow: var(--shadow-soft);
-  border: 1px solid var(--border-light);
-  margin-bottom: 1.2rem;
-}
-
-.form-field {
-  display: flex;
-  flex-direction: column;
-  gap: 0.4rem;
-  margin-bottom: 1rem;
-}
-
-.form-field label {
-  font-size: 0.85rem;
-  font-weight: 700;
-  color: var(--navy-title);
-}
-
-.form-input {
-  width: 100%;
-  padding: 0.8rem 1rem;
-  border: 1.5px solid var(--border-light);
-  border-radius: 12px;
-  font-size: 0.95rem;
-  outline: none;
-  font-family: inherit;
-  transition: border-color 0.2s;
-}
-
-.form-input:focus {
-  border-color: var(--badge-blue);
-}
-
-.btn-action-primary {
-  width: 100%;
-  padding: 0.95rem;
-  background: var(--badge-blue);
-  color: white;
-  border: none;
-  border-radius: 14px;
-  font-size: 1rem;
-  font-weight: 700;
-  cursor: pointer;
-  box-shadow: var(--shadow-badge);
-  transition: transform 0.15s, background 0.2s;
-}
-
-.btn-action-primary:hover {
-  background: #032b56;
-}
-
-.btn-action-primary:active {
-  transform: scale(0.98);
 }
