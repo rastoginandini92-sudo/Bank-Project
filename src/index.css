@@ -371,6 +371,128 @@ body {
   transform: scale(0.98);
 }
 
+/* Confirmation Screen Specific Styling */
+.confirmation-blue-card {
+  background: var(--inner-blue-box);
+  border-radius: 24px;
+  padding: 2rem 1.2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 1rem;
+  border: 1px solid #d5e5f7;
+}
+
+.confirmation-check-badge {
+  width: 64px;
+  height: 64px;
+  border-radius: 20px;
+  background: var(--badge-blue);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--shadow-badge);
+  margin-bottom: 0.3rem;
+}
+
+.check-green-box {
+  width: 36px;
+  height: 36px;
+  background: #56ab2f;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+}
+
+.confirmation-title {
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: var(--navy-title);
+  line-height: 1.25;
+  letter-spacing: -0.2px;
+}
+
+.confirmation-subtext {
+  font-size: 0.88rem;
+  color: var(--text-subtitle);
+  line-height: 1.4;
+  margin-top: -0.3rem;
+}
+
+.confirmation-badge-pill {
+  width: 100%;
+  background: #ffffff;
+  border: 1.5px solid #d6e5f5;
+  border-radius: 24px;
+  padding: 0.8rem 1.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.8rem;
+  box-shadow: 0 4px 12px rgba(4, 56, 116, 0.04);
+}
+
+.stopwatch-icon-wrapper {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  border: 2px solid #a4b9d0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #64748b;
+  flex-shrink: 0;
+}
+
+.time-badge-text {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  text-align: left;
+}
+
+.time-badge-label {
+  font-size: 0.68rem;
+  font-weight: 800;
+  color: var(--text-subtitle);
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+}
+
+.time-badge-value {
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: var(--navy-title);
+  line-height: 1.1;
+}
+
+.status-badge-pill {
+  width: 100%;
+  background: #ffffff;
+  border: 1.5px solid #d6e5f5;
+  border-radius: 24px;
+  padding: 0.75rem 1.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: var(--navy-title);
+  box-shadow: 0 4px 12px rgba(4, 56, 116, 0.04);
+}
+
+.dot-amber {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #ffb800;
+  box-shadow: 0 0 8px rgba(255, 184, 0, 0.8);
+}
+
 /* Footer Section inside Card */
 .home-card-footer {
   border-top: 1px solid var(--border-light);
@@ -395,107 +517,4 @@ body {
 .home-card-footer strong {
   color: var(--navy-title);
   font-weight: 700;
-}
-
-/* Inner Feature Screen Layout */
-.inner-screen-header {
-  background: var(--navy-dark);
-  color: white;
-  padding: 1rem 1.2rem;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.inner-header-left {
-  display: flex;
-  align-items: center;
-  gap: 0.8rem;
-}
-
-.back-btn {
-  background: rgba(255, 255, 255, 0.15);
-  border: none;
-  color: white;
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: background 0.2s;
-}
-
-.back-btn:hover {
-  background: rgba(255, 255, 255, 0.3);
-}
-
-.inner-screen-title {
-  font-size: 1.15rem;
-  font-weight: 700;
-}
-
-.inner-screen-body {
-  padding: 1.2rem;
-  flex: 1;
-}
-
-.glass-panel-inner {
-  background: #ffffff;
-  border-radius: 24px;
-  padding: 1.5rem;
-  box-shadow: var(--shadow-soft);
-  border: 1px solid var(--border-light);
-  margin-bottom: 1.2rem;
-}
-
-.form-field {
-  display: flex;
-  flex-direction: column;
-  gap: 0.4rem;
-  margin-bottom: 1rem;
-}
-
-.form-field label {
-  font-size: 0.85rem;
-  font-weight: 700;
-  color: var(--navy-title);
-}
-
-.form-input {
-  width: 100%;
-  padding: 0.8rem 1rem;
-  border: 1.5px solid var(--border-light);
-  border-radius: 12px;
-  font-size: 0.95rem;
-  outline: none;
-  font-family: inherit;
-  transition: border-color 0.2s;
-}
-
-.form-input:focus {
-  border-color: var(--badge-blue);
-}
-
-.btn-action-primary {
-  width: 100%;
-  padding: 0.95rem;
-  background: var(--badge-blue);
-  color: white;
-  border: none;
-  border-radius: 14px;
-  font-size: 1rem;
-  font-weight: 700;
-  cursor: pointer;
-  box-shadow: var(--shadow-badge);
-  transition: transform 0.15s, background 0.2s;
-}
-
-.btn-action-primary:hover {
-  background: #032b56;
-}
-
-.btn-action-primary:active {
-  transform: scale(0.98);
 }

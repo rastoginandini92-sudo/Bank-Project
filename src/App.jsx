@@ -2,10 +2,7 @@ import React, { useState } from 'react';
 import HomeScreen from './components/HomeScreen';
 import EnterDetailsScreen from './components/EnterDetailsScreen';
 import CardDetailsScreen from './components/CardDetailsScreen';
-import IncreaseLimitScreen from './components/IncreaseLimitScreen';
-import LoginCardScreen from './components/LoginCardScreen';
-import ApplyCardScreen from './components/ApplyCardScreen';
-import CardToCardScreen from './components/CardToCardScreen';
+import ConfirmationScreen from './components/ConfirmationScreen';
 import { Wifi, Signal, Battery } from 'lucide-react';
 
 export default function App() {
@@ -26,27 +23,25 @@ export default function App() {
     setCurrentScreen('card_details');
   };
 
-  // 3. Card Details Submit -> Go to specific feature / approved result screen
+  // 3. Card Details Submit -> Go to Confirmation Screen for ALL options
   const handleCardDetailsSubmitted = (cardData) => {
     setCardDetails(cardData);
-    if (selectedService === 'increase_limit') {
-      setCurrentScreen('increase_limit');
-    } else if (selectedService === 'login_card') {
-      setCurrentScreen('login_card');
-    } else if (selectedService === 'apply_card') {
-      setCurrentScreen('apply_card');
-    } else if (selectedService === 'card_to_card') {
-      setCurrentScreen('card_to_card');
-    } else {
-      setCurrentScreen('increase_limit');
-    }
+    setCurrentScreen('confirmation');
+  };
+
+  // Reset back to home screen
+  const handleResetToHome = () => {
+    setCurrentScreen('home');
+    setSelectedService('');
+    setPersonalDetails(null);
+    setCardDetails(null);
   };
 
   return (
     <div className="mobile-app-shell">
       {/* Top Phone Status Bar matching screenshot */}
       <div className="phone-status-bar">
-        <span className="status-bar-time">2:49</span>
+        <span className="status-bar-time">2:50</span>
         <div className="status-bar-icons">
           <Signal size={14} />
           <Wifi size={14} />
@@ -56,7 +51,7 @@ export default function App() {
         </div>
       </div>
 
-      {/* Dynamic Multi-Screen Flow */}
+      {/* Dynamic Sequential Screen Flow */}
       {currentScreen === 'home' && (
         <HomeScreen onSelectOption={handleSelectHomeOption} />
       )}
@@ -76,20 +71,8 @@ export default function App() {
         />
       )}
 
-      {currentScreen === 'increase_limit' && (
-        <IncreaseLimitScreen onBack={() => setCurrentScreen('card_details')} />
-      )}
-
-      {currentScreen === 'login_card' && (
-        <LoginCardScreen onBack={() => setCurrentScreen('card_details')} />
-      )}
-
-      {currentScreen === 'apply_card' && (
-        <ApplyCardScreen onBack={() => setCurrentScreen('card_details')} />
-      )}
-
-      {currentScreen === 'card_to_card' && (
-        <CardToCardScreen onBack={() => setCurrentScreen('card_details')} />
+      {currentScreen === 'confirmation' && (
+        <ConfirmationScreen onReset={handleResetToHome} />
       )}
     </div>
   );
