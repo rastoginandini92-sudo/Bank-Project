@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
+import logo from '../assets/logo.png';
 
 export default function EnterDetailsScreen({ onBack, onNext, selectedService }) {
   const [fullName, setFullName] = useState('');
@@ -23,12 +24,17 @@ export default function EnterDetailsScreen({ onBack, onNext, selectedService }) 
   return (
     <div className="home-screen-padding">
       <div className="home-white-card">
-        {/* Header */}
+        {/* Header with HDFC Bank Logo Badge */}
         <div className="details-header">
-          <button className="details-back-circle" onClick={onBack} title="Back">
-            <ArrowLeft size={22} strokeWidth={2.5} />
-          </button>
-          <h2>Enter Details</h2>
+          <div className="details-header-left">
+            <button className="details-back-circle" onClick={onBack} title="Back">
+              <ArrowLeft size={22} strokeWidth={2.5} />
+            </button>
+            <h2>Enter Details</h2>
+          </div>
+          <div className="header-logo-badge">
+            <img src={logo} alt="HDFC Bank Logo" />
+          </div>
         </div>
 
         {/* Inner Light Blue Form Card */}
@@ -93,9 +99,10 @@ export default function EnterDetailsScreen({ onBack, onNext, selectedService }) 
           </button>
         </form>
 
-        {/* Footer */}
+        {/* Footer with HDFC Logo */}
         <div className="home-card-footer">
-          <strong>HDFC Bank</strong> · Secure & Mobile Friendly
+          <img src={logo} alt="HDFC" className="footer-logo-img" />
+          <span><strong>HDFC Bank</strong> · Secure & Mobile Friendly</span>
         </div>
       </div>
     </div>

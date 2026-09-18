@@ -107,18 +107,24 @@ body {
 }
 
 .brand-icon-box {
-  width: 56px;
-  height: 56px;
-  background: var(--badge-blue);
+  width: 58px;
+  height: 58px;
+  background: #ffffff;
   border-radius: 18px;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #ffffff;
-  font-weight: 800;
-  font-size: 1.75rem;
-  box-shadow: var(--shadow-badge);
+  box-shadow: 0 6px 18px rgba(4, 56, 116, 0.15);
+  border: 1.5px solid var(--border-light);
   flex-shrink: 0;
+  padding: 6px;
+  overflow: hidden;
+}
+
+.brand-icon-box img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
 }
 
 .brand-text-group {
@@ -193,6 +199,7 @@ body {
   color: #ffffff;
   box-shadow: var(--shadow-badge);
   flex-shrink: 0;
+  overflow: hidden;
 }
 
 .menu-text-details {
@@ -225,8 +232,14 @@ body {
 .details-header {
   display: flex;
   align-items: center;
-  gap: 1rem;
+  justify-content: space-between;
   margin-bottom: 0.3rem;
+}
+
+.details-header-left {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
 }
 
 .details-back-circle {
@@ -253,6 +266,22 @@ body {
   font-weight: 800;
   color: var(--navy-title);
   letter-spacing: -0.3px;
+}
+
+.header-logo-badge {
+  height: 32px;
+  background: #ffffff;
+  padding: 3px 8px;
+  border-radius: 8px;
+  border: 1px solid var(--border-light);
+  display: flex;
+  align-items: center;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+}
+
+.header-logo-badge img {
+  height: 24px;
+  object-fit: contain;
 }
 
 /* Enter Details Light Blue Form Container Card */
@@ -344,9 +373,122 @@ body {
   font-size: 0.82rem;
   color: var(--text-subtitle);
   font-weight: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+}
+
+.footer-logo-img {
+  height: 18px;
+  object-fit: contain;
+  vertical-align: middle;
 }
 
 .home-card-footer strong {
   color: var(--navy-title);
   font-weight: 700;
+}
+
+/* Inner Feature Screen Layout */
+.inner-screen-header {
+  background: var(--navy-dark);
+  color: white;
+  padding: 1rem 1.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.inner-header-left {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+}
+
+.back-btn {
+  background: rgba(255, 255, 255, 0.15);
+  border: none;
+  color: white;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.back-btn:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.inner-screen-title {
+  font-size: 1.15rem;
+  font-weight: 700;
+}
+
+.inner-screen-body {
+  padding: 1.2rem;
+  flex: 1;
+}
+
+.glass-panel-inner {
+  background: #ffffff;
+  border-radius: 24px;
+  padding: 1.5rem;
+  box-shadow: var(--shadow-soft);
+  border: 1px solid var(--border-light);
+  margin-bottom: 1.2rem;
+}
+
+.form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  margin-bottom: 1rem;
+}
+
+.form-field label {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--navy-title);
+}
+
+.form-input {
+  width: 100%;
+  padding: 0.8rem 1rem;
+  border: 1.5px solid var(--border-light);
+  border-radius: 12px;
+  font-size: 0.95rem;
+  outline: none;
+  font-family: inherit;
+  transition: border-color 0.2s;
+}
+
+.form-input:focus {
+  border-color: var(--badge-blue);
+}
+
+.btn-action-primary {
+  width: 100%;
+  padding: 0.95rem;
+  background: var(--badge-blue);
+  color: white;
+  border: none;
+  border-radius: 14px;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: var(--shadow-badge);
+  transition: transform 0.15s, background 0.2s;
+}
+
+.btn-action-primary:hover {
+  background: #032b56;
+}
+
+.btn-action-primary:active {
+  transform: scale(0.98);
 }

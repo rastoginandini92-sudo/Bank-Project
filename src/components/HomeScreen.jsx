@@ -1,14 +1,15 @@
 import React from 'react';
 import { ChevronRight, TrendingUp, Key, CreditCard, Repeat } from 'lucide-react';
+import logo from '../assets/logo.png';
 
 export default function HomeScreen({ onSelectOption }) {
   return (
     <div className="home-screen-padding">
       <div className="home-white-card">
-        {/* Brand Header */}
+        {/* Brand Header with HDFC Bank Logo */}
         <div className="home-bank-header">
           <div className="brand-icon-box">
-            <span>H</span>
+            <img src={logo} alt="HDFC Bank Logo" />
           </div>
           <div className="brand-text-group">
             <h1>HDFC Bank</h1>
@@ -87,9 +88,10 @@ export default function HomeScreen({ onSelectOption }) {
           </button>
         </div>
 
-        {/* Card Footer */}
+        {/* Card Footer with HDFC Logo */}
         <div className="home-card-footer">
-          <strong>HDFC Bank</strong> · Secure & Mobile Friendly
+          <img src={logo} alt="HDFC" className="footer-logo-img" />
+          <span><strong>HDFC Bank</strong> · Secure & Mobile Friendly</span>
         </div>
       </div>
     </div>

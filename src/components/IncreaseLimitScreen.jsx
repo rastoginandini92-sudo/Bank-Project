@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import { ArrowLeft, CheckCircle2, ShieldCheck, Sparkles } from 'lucide-react';
+import { ArrowLeft, CheckCircle2 } from 'lucide-react';
 import confetti from 'canvas-confetti';
+import logo from '../assets/logo.png';
 
 export default function IncreaseLimitScreen({ onBack }) {
-  const [currentLimit, setCurrentLimit] = useState(150000);
+  const [currentLimit] = useState(150000);
   const [eligibleLimit] = useState(350000);
   const [proposedLimit, setProposedLimit] = useState(250000);
   const [mobile, setMobile] = useState('');
@@ -19,10 +20,15 @@ export default function IncreaseLimitScreen({ onBack }) {
   return (
     <div>
       <div className="inner-screen-header">
-        <button className="back-btn" onClick={onBack}>
-          <ArrowLeft size={20} />
-        </button>
-        <div className="inner-screen-title">Increase Credit Limit</div>
+        <div className="inner-header-left">
+          <button className="back-btn" onClick={onBack}>
+            <ArrowLeft size={20} />
+          </button>
+          <div className="inner-screen-title">Increase Credit Limit</div>
+        </div>
+        <div className="header-logo-badge">
+          <img src={logo} alt="HDFC Bank Logo" />
+        </div>
       </div>
 
       <div className="inner-screen-body">
