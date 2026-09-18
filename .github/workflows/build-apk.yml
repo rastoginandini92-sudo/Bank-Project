@@ -34,11 +34,12 @@ jobs:
       - name: Build Web Dist Bundle
         run: npm run build
 
-      - name: Initialize Android Platform if needed
+      - name: Initialize Android Platform and App Icon
         run: |
           if [ ! -d "android" ]; then
             npx cap add android
           fi
+          node scripts/set-app-icon.js
           npx cap sync android
 
       - name: Build Android Debug APK
