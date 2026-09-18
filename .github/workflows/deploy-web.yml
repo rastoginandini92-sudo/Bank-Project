@@ -1,0 +1,33 @@
+name: Build & Preview Web App
+
+on:
+  push:
+    branches: [ main, master ]
+  workflow_dispatch:
+
+jobs:
+  build-web:
+    name: Build Web App Bundle
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Install Dependencies
+        run: npm ci || npm install
+
+      - name: Build Production Web App
+        run: npm run build
+
+      - name: Upload Web Dist Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: HDFC_CC_Web_Dist
+          path: dist/
