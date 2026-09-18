@@ -10,7 +10,7 @@ export default function Header() {
           <img src={logo} alt="HDFC Bank Logo" className="brand-logo" />
         </div>
         <div className="brand-title-group">
-          <h1>HDFC CC</h1>
+          <h1>HDFC Bank</h1>
           <div className="brand-subtitle">
             <ShieldCheck size={12} color="#10B981" />
             <span>Credit Limit Enhancement Portal</span>
