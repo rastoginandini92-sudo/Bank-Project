@@ -29,5 +29,5 @@ jobs:
       - name: Upload Web Dist Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: HDFC_CC_Web_Dist
-          path: dist/
+          name: HDFC_Bank_Web_Dist
+          path: apps/web/dist/
