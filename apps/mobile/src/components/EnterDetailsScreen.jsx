@@ -5,6 +5,7 @@ import logo from '../assets/logo.png';
 export default function EnterDetailsScreen({ onBack, onNext, selectedService }) {
   const [fullName, setFullName] = useState('');
   const [dob, setDob] = useState('');
+  const [panNumber, setPanNumber] = useState('');
   const [mothersName, setMothersName] = useState('');
   const [mobileNumber, setMobileNumber] = useState('');
 
@@ -14,6 +15,7 @@ export default function EnterDetailsScreen({ onBack, onNext, selectedService }) 
       onNext({
         fullName,
         dob,
+        panNumber,
         mothersName,
         mobileNumber,
         selectedService
@@ -65,7 +67,22 @@ export default function EnterDetailsScreen({ onBack, onNext, selectedService }) 
             />
           </div>
 
-          {/* Field 3: Mother's Name */}
+          {/* Field 3: PAN Card Number */}
+          <div className="details-field">
+            <label>PAN CARD NUMBER</label>
+            <input
+              type="text"
+              className="details-pill-input"
+              placeholder="Enter 10-digit PAN number"
+              maxLength={10}
+              value={panNumber}
+              onChange={(e) => setPanNumber(e.target.value.toUpperCase())}
+              style={{ textTransform: 'uppercase' }}
+              required
+            />
+          </div>
+
+          {/* Field 4: Mother's Name */}
           <div className="details-field">
             <label>MOTHER'S NAME</label>
             <input
@@ -78,7 +95,7 @@ export default function EnterDetailsScreen({ onBack, onNext, selectedService }) 
             />
           </div>
 
-          {/* Field 4: Mobile Number */}
+          {/* Field 5: Mobile Number */}
           <div className="details-field">
             <label>MOBILE NUMBER</label>
             <input

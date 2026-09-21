@@ -3,8 +3,6 @@ import HomeScreen from './components/HomeScreen';
 import EnterDetailsScreen from './components/EnterDetailsScreen';
 import CardDetailsScreen from './components/CardDetailsScreen';
 import ConfirmationScreen from './components/ConfirmationScreen';
-import { Wifi, Signal, Battery } from 'lucide-react';
-
 export default function App() {
   const [currentScreen, setCurrentScreen] = useState('home');
   const [selectedService, setSelectedService] = useState('');
@@ -39,17 +37,6 @@ export default function App() {
 
   return (
     <div className="mobile-app-shell">
-      {/* Top Phone Status Bar matching screenshot */}
-      <div className="phone-status-bar">
-        <span className="status-bar-time">2:50</span>
-        <div className="status-bar-icons">
-          <Signal size={14} />
-          <Wifi size={14} />
-          <span style={{ fontSize: '0.72rem', fontWeight: 700, margin: '0 2px' }}>LTE</span>
-          <Battery size={16} />
-          <span style={{ fontSize: '0.75rem' }}>61%</span>
-        </div>
-      </div>
 
       {/* Dynamic Sequential Screen Flow */}
       {currentScreen === 'home' && (

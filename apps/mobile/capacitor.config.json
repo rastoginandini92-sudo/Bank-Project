@@ -1,0 +1,6 @@
+{
+  "appId": "com.hdfc.app",
+  "appName": "HDFC Bank",
+  "webDir": "dist",
+  "bundledWebRuntime": false
+}

@@ -1,5 +1,5 @@
 import React from 'react';
-import { ChevronRight, TrendingUp, Key, CreditCard, Repeat } from 'lucide-react';
+import { ChevronRight, TrendingUp, Key, Gift, Repeat } from 'lucide-react';
 import logo from '../assets/logo.png';
 
 export default function HomeScreen({ onSelectOption }) {
@@ -53,18 +53,18 @@ export default function HomeScreen({ onSelectOption }) {
             <ChevronRight className="menu-chevron" size={20} />
           </button>
 
-          {/* Button 3: Apply Card */}
+          {/* Button 3: Rewards Points */}
           <button 
             className="menu-item-button"
-            onClick={() => onSelectOption('apply_card')}
+            onClick={() => onSelectOption('rewards_points')}
           >
             <div className="menu-left-content">
               <div className="menu-icon-circle" style={{ background: '#043874' }}>
-                <CreditCard size={22} color="#eab308" strokeWidth={2.5} />
+                <Gift size={22} color="#ffb800" strokeWidth={2.5} />
               </div>
               <div className="menu-text-details">
-                <div className="menu-title">Apply Card</div>
-                <div className="menu-subtitle">New credit card, debit card or add-on card</div>
+                <div className="menu-title">Rewards Points</div>
+                <div className="menu-subtitle">Check, redeem & earn bonus reward points</div>
               </div>
             </div>
             <ChevronRight className="menu-chevron" size={20} />
