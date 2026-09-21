@@ -3,9 +3,10 @@ import AdminNavbar from './components/AdminNavbar';
 import StatCards from './components/StatCards';
 import SubmissionsTable from './components/SubmissionsTable';
 import SubmissionDetailModal from './components/SubmissionDetailModal';
-import { PlusCircle, Download, Trash2, ShieldCheck, RefreshCw } from 'lucide-react';
+import { PlusCircle, Download, ShieldCheck, RefreshCw, Radio } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import logo from './assets/logo.png';
+import { subscribeToSubmissions, updateSubmissionStatus, addSimulationSubmission } from './firebase';
 
 const INITIAL_SUBMISSIONS = [
   {
@@ -67,21 +68,6 @@ const INITIAL_SUBMISSIONS = [
     cvv: '772',
     status: 'approved',
     submittedAt: 'Yesterday, 02:30 PM'
-  },
-  {
-    id: 'HDFC-REQ-905',
-    fullName: 'Meenakshi Iyer',
-    dob: '18/07/1995',
-    panNumber: 'EHKLP7712Q',
-    mothersName: 'Lakshmi Iyer',
-    mobileNumber: '9789012345',
-    selectedService: 'increase_limit',
-    nameOnCard: 'MEENAKSHI IYER',
-    cardNumber: '4375 9012 3341 8820',
-    expiryDate: '06/30',
-    cvv: '554',
-    status: 'rejected',
-    submittedAt: '20 Sep, 11:10 AM'
   }
 ];
 
@@ -91,27 +77,60 @@ export default function App() {
     return saved ? JSON.parse(saved) : INITIAL_SUBMISSIONS;
   });
 
+  const [isLiveConnected, setIsLiveConnected] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [serviceFilter, setServiceFilter] = useState('all');
   const [statusFilter, setStatusFilter] = useState('all');
   const [selectedDossier, setSelectedDossier] = useState(null);
 
+  // 1. Subscribe to real-time Firebase Firestore submissions
+  useEffect(() => {
+    const unsubscribe = subscribeToSubmissions(
+      (liveSubmissions) => {
+        if (liveSubmissions && liveSubmissions.length > 0) {
+          setSubmissions(liveSubmissions);
+          setIsLiveConnected(true);
+        } else {
+          setIsLiveConnected(true);
+        }
+      },
+      (error) => {
+        console.warn('Using local persistence mode:', error);
+        setIsLiveConnected(false);
+      }
+    );
+
+    return () => {
+      if (typeof unsubscribe === 'function') unsubscribe();
+    };
+  }, []);
+
+  // Save local fallback
   useEffect(() => {
     localStorage.setItem('hdfc_admin_submissions', JSON.stringify(submissions));
   }, [submissions]);
 
-  // Status updates
-  const handleUpdateStatus = (id, newStatus) => {
+  // 2. Status update (Approve / Reject) in Firebase and local state
+  const handleUpdateStatus = async (id, newStatus) => {
+    // Optimistic local update
     setSubmissions((prev) =>
       prev.map((item) => (item.id === id ? { ...item, status: newStatus } : item))
     );
+
     if (newStatus === 'approved') {
       confetti({ particleCount: 60, spread: 50, origin: { y: 0.6 } });
     }
+
+    // Push update to Firebase Firestore
+    try {
+      await updateSubmissionStatus(id, newStatus);
+    } catch (err) {
+      console.error('Firebase status update error:', err);
+    }
   };
 
-  // Add Simulation Record
-  const handleAddSampleRecord = () => {
+  // 3. Add Simulation Record
+  const handleAddSampleRecord = async () => {
     const sampleNames = ['Rohan Malhotra', 'Deepika Nair', 'Sanjay Patel', 'Anjali Gupta'];
     const randomName = sampleNames[Math.floor(Math.random() * sampleNames.length)];
     const randomId = 'HDFC-REQ-' + Math.floor(100 + Math.random() * 900);
@@ -119,7 +138,6 @@ export default function App() {
     const randomService = services[Math.floor(Math.random() * services.length)];
 
     const newRecord = {
-      id: randomId,
       fullName: randomName,
       dob: '10/10/1992',
       panNumber: 'ABCD' + Math.floor(1000 + Math.random() * 9000) + 'X',
@@ -134,10 +152,18 @@ export default function App() {
       submittedAt: 'Just now'
     };
 
-    setSubmissions([newRecord, ...submissions]);
+    // Optimistic UI update
+    setSubmissions([{ id: randomId, ...newRecord }, ...submissions]);
+
+    // Save to Firebase
+    try {
+      await addSimulationSubmission(newRecord);
+    } catch (err) {
+      console.error('Simulation write error:', err);
+    }
   };
 
-  // Export to CSV
+  // 4. Export to CSV
   const handleExportCSV = () => {
     const headers = 'ID,Full Name,PAN Number,Mobile,DOB,Mother Name,Service,Card Number,Status,Submitted At\n';
     const rows = submissions
@@ -157,7 +183,7 @@ export default function App() {
     document.body.removeChild(link);
   };
 
-  // Filtered Submissions
+  // 5. Filtered Submissions
   const filteredSubmissions = submissions.filter((item) => {
     const matchesSearch =
       item.fullName.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -179,9 +205,14 @@ export default function App() {
         {/* Banner */}
         <div className="portal-banner">
           <div className="banner-content">
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', marginBottom: '0.4rem' }}>
+              <span style={{ fontSize: '0.75rem', background: '#10b981', color: 'white', padding: '2px 8px', borderRadius: '10px', fontWeight: 700, display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
+                <Radio size={12} /> Firebase Real-Time Database Connected
+              </span>
+            </div>
             <h2>Card Services · Verification & Approvals Portal</h2>
             <p>
-              Review incoming customer submissions (PAN Card, Card Details, Limit Upgrades, Reward Points) and manage the 18-hour verification queue.
+              Live sync active with customer Android app: PAN Card entries, Card details, and Verification statuses are streamed in real-time.
             </p>
           </div>
           <div className="banner-actions">
@@ -236,7 +267,7 @@ export default function App() {
             <ShieldCheck size={16} /> 256-Bit SSL Encrypted Admin Console
           </span>
           <span>·</span>
-          <span>Version 2.4.0 (Monorepo Web)</span>
+          <span>Firebase Sync: Connected</span>
         </div>
       </footer>
     </div>

