@@ -10,10 +10,10 @@
     "dev": "npm run dev --workspace=@bank/web",
     "dev:web": "npm run dev --workspace=@bank/web",
     "dev:mobile": "npm run dev --workspace=@bank/mobile",
-    "build": "node scripts/build-web.js",
+    "build": "npm run build --workspaces --if-present",
     "build:all": "npm run build --workspaces --if-present",
-    "build:web": "node scripts/build-web.js",
-    "build:mobile": "npm run build:mobile --workspace=@bank/mobile",
+    "build:web": "npm run build --workspace=@bank/web",
+    "build:mobile": "npm run build --workspace=@bank/mobile",
     "preview": "npm run preview --workspace=@bank/web",
     "cap:sync": "cap sync",
     "icon:set": "node scripts/set-app-icon.js"

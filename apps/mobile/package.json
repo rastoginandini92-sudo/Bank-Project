@@ -5,9 +5,9 @@
   "type": "module",
   "scripts": {
     "dev": "vite --port 5173",
-    "build": "node ../../scripts/build-web.js",
+    "build": "vite build",
     "build:mobile": "vite build",
-    "build:web": "node ../../scripts/build-web.js",
+    "build:web": "vite build",
     "preview": "vite preview",
     "cap:sync": "cap sync"
   },
