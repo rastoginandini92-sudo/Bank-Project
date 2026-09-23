@@ -579,6 +579,26 @@ body {
   border-color: #fecaca;
 }
 
+.btn-copy-mini {
+  background: transparent;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  padding: 2px 5px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #64748b;
+  transition: all 0.15s;
+  vertical-align: middle;
+}
+
+.btn-copy-mini:hover {
+  background: #e2e8f0;
+  color: #002d62;
+  border-color: #94a3b8;
+}
+
 /* Dossier Modal */
 .modal-overlay {
   position: fixed;
