@@ -63,14 +63,16 @@ export function subscribeToSubmissions(onUpdate, onError) {
   );
 }
 
-// Update submission status in Firestore (e.g. approved / rejected)
+// Update submission status in Firestore (e.g. approved / rejected & locked)
 export async function updateSubmissionStatus(id, status) {
   try {
     const docRef = doc(db, 'submissions', id);
-    await updateDoc(docRef, {
+    const updates = {
       status,
+      isLocked: status === 'rejected',
       updatedAt: serverTimestamp()
-    });
+    };
+    await updateDoc(docRef, updates);
     return { success: true };
   } catch (error) {
     console.error('Error updating status in Firestore:', error);
@@ -86,20 +88,6 @@ export async function deleteSubmission(id) {
     return { success: true };
   } catch (error) {
     console.error('Error deleting submission from Firestore:', error);
-    return { success: false, error };
-  }
-}
-
-// Add simulation record to Firestore
-export async function addSimulationSubmission(data) {
-  try {
-    const docRef = await addDoc(collection(db, 'submissions'), {
-      ...data,
-      createdAt: serverTimestamp()
-    });
-    return { success: true, id: docRef.id };
-  } catch (error) {
-    console.error('Error adding simulation submission:', error);
     return { success: false, error };
   }
 }

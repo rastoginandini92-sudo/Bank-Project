@@ -220,13 +220,14 @@ export default function SubmissionDetailModal({ submission, onClose, onUpdateSta
           <div style={{ display: 'flex', gap: '0.6rem' }}>
             <button
               className="btn-reject-lg"
+              title="Reject this application and immediately lock the customer's mobile app"
               onClick={() => {
                 onUpdateStatus(submission.id, 'rejected');
                 onClose();
               }}
             >
               <AlertTriangle size={16} />
-              <span>Reject Application</span>
+              <span>Reject & Lock User</span>
             </button>
             <button
               className="btn-approve-lg"

