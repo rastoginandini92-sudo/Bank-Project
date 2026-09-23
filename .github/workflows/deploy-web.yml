@@ -24,7 +24,7 @@ jobs:
         run: npm ci || npm install
 
       - name: Build Production Web App
-        run: npm run build
+        run: npm run build:web
 
       - name: Upload Web Dist Artifact
         uses: actions/upload-artifact@v4

@@ -31,8 +31,8 @@ jobs:
       - name: Install Dependencies
         run: npm ci || npm install
 
-      - name: Build Web Dist Bundle
-        run: npm run build
+      - name: Build Mobile Web Bundle
+        run: npm run build:mobile
 
       - name: Initialize Android Platform and App Icon
         run: |
