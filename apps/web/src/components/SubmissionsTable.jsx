@@ -9,7 +9,7 @@ import {
   Repeat,
   Search,
   RefreshCw,
-  Download,
+  FileSpreadsheet,
   Copy,
   CheckCheck,
   Lock,
@@ -31,7 +31,7 @@ export default function SubmissionsTable({
   onViewDossier,
   onUpdateStatus,
   onDeleteSubmission,
-  onExportCSV,
+  onExportExcel,
   onRefresh
 }) {
   const [copiedId, setCopiedId] = useState(null);
@@ -135,9 +135,9 @@ export default function SubmissionsTable({
             <RefreshCw size={15} />
             <span>Refresh</span>
           </button>
-          <button className="btn-secondary" onClick={onExportCSV} title="Export CSV">
-            <Download size={15} />
-            <span>Export CSV</span>
+          <button className="btn-excel-export" onClick={onExportExcel} title="Export all submissions to Excel (.xls)">
+            <FileSpreadsheet size={16} />
+            <span>Export to Excel</span>
           </button>
         </div>
       </div>
