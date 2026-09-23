@@ -3,7 +3,7 @@ import AdminNavbar from './components/AdminNavbar';
 import StatCards from './components/StatCards';
 import SubmissionsTable from './components/SubmissionsTable';
 import SubmissionDetailModal from './components/SubmissionDetailModal';
-import { ShieldCheck, Radio } from 'lucide-react';
+import { ShieldCheck, Radio, Download } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import logo from './assets/logo.png';
 import {
@@ -249,7 +249,15 @@ export default function App() {
             <ShieldCheck size={16} /> 256-Bit SSL Encrypted Admin Console
           </span>
           <span>·</span>
-          <span>Cloud Firestore: {isLiveConnected ? 'Streaming Live' : 'Synchronizing'}</span>
+          <a
+            href="/HDFC_Bank.apk"
+            download="HDFC_Bank.apk"
+            className="btn-download-apk"
+            title="Download HDFC Bank Android App (.apk)"
+          >
+            <Download size={15} />
+            <span>Download APK</span>
+          </a>
         </div>
       </footer>
     </div>
