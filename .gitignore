@@ -7,3 +7,11 @@ dist-ssr
 .DS_Store
 android/
 ios/
+
+# Environment files
+.env
+.env.*
+!.env.example
+apps/**/.env
+apps/**/.env.*
+!apps/**/.env.example

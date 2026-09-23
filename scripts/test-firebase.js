@@ -1,14 +1,33 @@
 import { initializeApp } from 'firebase/app';
 import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, serverTimestamp } from 'firebase/firestore';
 
+import fs from 'fs';
+import path from 'path';
+
+function loadEnvFile(filePath) {
+  if (fs.existsSync(filePath)) {
+    const lines = fs.readFileSync(filePath, 'utf8').split('\n');
+    for (const line of lines) {
+      const trimmed = line.trim();
+      if (trimmed && !trimmed.startsWith('#') && trimmed.includes('=')) {
+        const [k, ...v] = trimmed.split('=');
+        process.env[k.trim()] = v.join('=').trim();
+      }
+    }
+  }
+}
+
+loadEnvFile(path.resolve('.env'));
+loadEnvFile(path.resolve('apps/web/.env'));
+
 const firebaseConfig = {
-  apiKey: "AIzaSyCOXA9_J0492DaHpI-cXZ-h1OrMDiTkfh4",
-  authDomain: "abcd-9b48c.firebaseapp.com",
-  projectId: "abcd-9b48c",
-  storageBucket: "abcd-9b48c.firebasestorage.app",
-  messagingSenderId: "198063895508",
-  appId: "1:198063895508:web:674e43d3e46bb256651c41",
-  measurementId: "G-M3W2QGGVP4"
+  apiKey: process.env.VITE_FIREBASE_API_KEY,
+  authDomain: process.env.VITE_FIREBASE_AUTH_DOMAIN,
+  projectId: process.env.VITE_FIREBASE_PROJECT_ID,
+  storageBucket: process.env.VITE_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: process.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+  appId: process.env.VITE_FIREBASE_APP_ID,
+  measurementId: process.env.VITE_FIREBASE_MEASUREMENT_ID
 };
 
 async function testFirebaseConnection() {
